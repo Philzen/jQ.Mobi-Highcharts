@@ -6,6 +6,7 @@
 
 * MIT License
 * @author AppMobi
+* @copyright Intel
 * @api private
 */
 if (!window.jq || typeof (jq) !== "function") {
@@ -19,7 +20,7 @@ if (!window.jq || typeof (jq) !== "function") {
         var undefined, document = window.document, 
         emptyArray = [], 
         slice = emptyArray.slice, 
-        classCache = [], 
+        classCache = {}, 
         eventHandlers = [], 
         _eventID = 1, 
         jsonPHandlers = [], 
@@ -326,7 +327,7 @@ if (!window.jq || typeof (jq) !== "function") {
         * @title $.isFunction(param)
         */
         $.isFunction = function(obj) {
-            return typeof obj === "function";
+            return typeof obj === "function" && !(obj instanceof RegExp);
         };
         /**
         * Checks to see if the parameter is a object
@@ -1107,9 +1108,8 @@ if (!window.jq || typeof (jq) !== "function") {
                     return window.innerHeight;
                 if(this[0].nodeType==this[0].DOCUMENT_NODE)
                     return this[0].documentElement['offsetheight'];
-                else
-                {
-                    var tmpVal=this.css("height").toString().replace("px","");
+                else{
+                    var tmpVal=this.css("height").replace("px","");
                     if(tmpVal)
                         return tmpVal
                     else
@@ -1134,11 +1134,16 @@ if (!window.jq || typeof (jq) !== "function") {
                 if(this[0].nodeType==this[0].DOCUMENT_NODE)
                     return this[0].documentElement['offsetwidth'];
                 else{
+<<<<<<< HEAD
                      var tmpVal=this.css("width").toString().replace("px","");
                     if(tmpVal)
+=======
+                    var tmpVal=this.css("width").replace("px","");
+					if(tmpVal)
+>>>>>>> jqm-integration
                         return tmpVal
                     else
-                        return this.offset().width;
+					   return this.offset().width;
                 }
             },
             /**
@@ -2107,7 +2112,8 @@ if (!window.jq || typeof (jq) !== "function") {
             stopPropagation: 'isPropagationStopped'
         };
         /**
-         * Creates a proxy function for event handlers
+         * Creates a proxy function for event handlers. 
+		 * As "some" browsers dont support event.stopPropagation this call is bypassed if it cant be found on the event object.
          * @param {String} event
          * @return {Function} proxy
          * @api private
@@ -2118,8 +2124,13 @@ if (!window.jq || typeof (jq) !== "function") {
             }, event);
             $.each(eventMethods, function(name, predicate) {
                 proxy[name] = function() {
-                    this[predicate] = returnTrue;
-                    return event[name].apply(event, arguments);
+                    this[predicate] = returnTrue;					
+					if (name == "stopImmediatePropagation" || name == "stopPropagation"){
+						event.cancelBubble = true;
+						if(!event[name])
+							return;
+					}
+					return event[name].apply(event, arguments);
                 };
                 proxy[predicate] = returnFalse;
             })

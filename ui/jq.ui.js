@@ -588,8 +588,8 @@
 					this.removeEvents();
 				}
 			},
-			scrollToItem: function(el, where) { //TODO: add functionality for x position
-				if(!jq.is$(el)) el = jq(el);
+			scrollToItem: function(el, where, time) { //TODO: add functionality for x position
+				if(!$.is$(el)) el = $(el);
 
 				if(where == 'bottom') {
 					var itemPos = el.offset();
@@ -608,7 +608,7 @@
 				this.scrollBy({
 					y: newTop,
 					x: 0
-				}, 0);
+				}, time);
 			},
 			setPaddings: function(top, bottom) {
 				var el = jq(this.el);
@@ -682,9 +682,17 @@
 			this.init(el, opts);
 			var jqel = jq(el);
 			if(opts.noParent !== true) {
+<<<<<<< HEAD
 				var oldParent = jqel.parent();
 				jqel.css('height', oldParent.height());
 				jqel.parent().parent().append(jqel);
+=======
+				var oldParent = $el.parent();
+				var oldHeight=oldParent.height();
+				oldHeight+=oldHeight.indexOf("%")==-1?"px":"";
+				$el.css('height', oldHeight);
+				$el.parent().parent().append($el);
+>>>>>>> jqm-integration
 				oldParent.remove();
 			}
 			this.container = this.el;
@@ -1860,7 +1868,7 @@
 })(jq);
 /**
  * jq.web.actionsheet - a actionsheet for html5 mobile apps
- * Copyright 2012 - AppMobi 
+ * Copyright 2012 - Intel 
  */
 (function(jq) {
     jq.fn["actionsheet"] = function(opts) {
@@ -1958,7 +1966,7 @@
 
 /*
  * jq.web.passwordBox - password box replacement for html5 mobile apps on android due to a bug with CSS3 translate3d
- * @copyright 2011 - AppMobi
+ * @copyright 2011 - Intel
  */
 (function (jq) {
     jq["passwordBox"] = function () {
@@ -2011,8 +2019,8 @@
     };
 })(jq);
 /*
- * Copyright: AppMobi
- * Description:  This script will replace all drop downs with friendly select controls.  Users can still interact
+ * @copyright: 2011 Intel
+ * @description:  This script will replace all drop downs with friendly select controls.  Users can still interact
  * with the old drop down box as normal with javascript, and this will be reflected
  
  */
@@ -2972,6 +2980,7 @@ if (!HTMLElement.prototype.unwatch) {
 					e.preventDefault();
 				return;
 			}
+			e.stopPropagation();
 		},
 
 		onTouchEnd: function(e) {
@@ -3066,7 +3075,7 @@ if (!HTMLElement.prototype.unwatch) {
  /**
  * jq.ui - A User Interface library for creating jqMobi applications
  *
- * @copyright 2011
+ * @copyright 2011 Intel
  * @author AppMobi
  */
 (function(jq) {
@@ -3117,8 +3126,15 @@ if (!HTMLElement.prototype.unwatch) {
 
         //click back event
          window.addEventListener("popstate", function() {
+<<<<<<< HEAD
             var id = jq.ui.getPanelId(document.location.hash);
+=======
+            
+            var id = $.ui.getPanelId(document.location.hash);
+>>>>>>> jqm-integration
             //make sure we allow hash changes outside jqUi
+            if(id==""&&$.ui.history.length===1) //Fix going back to first panel and an empty hash
+                id="#"+$.ui.firstDiv.id;
             if(id=="")
                 return;
             if(document.querySelectorAll(id+".panel").length===0)
@@ -3126,7 +3142,6 @@ if (!HTMLElement.prototype.unwatch) {
             if (id != "#" + jq.ui.activeDiv.id)
                 that.goBack();
         }, false);
-
         /**
          * Helper function to setup the transition objects
          * Custom transitions can be added via jq.ui.availableTransitions
@@ -3494,7 +3509,7 @@ if (!HTMLElement.prototype.unwatch) {
          * @title jq.ui.toggleNavMenu([force])
          */
         toggleNavMenu: function(force) {
-            if (!jq.ui.showNavMenu)
+            if (!this.showNavMenu)
                 return;
             if (jq("#navbar").css("display") != "none" && ((force !== undefined && force !== true) || force === undefined)) {
                 jq("#content").css("bottom", "0px");
@@ -4669,7 +4684,11 @@ if (!HTMLElement.prototype.unwatch) {
                     loadFirstDiv();
             }
             var that = this;
+<<<<<<< HEAD
             jq.bind(jq.ui, "content-loaded", function() {
+=======
+            $.bind(that, "content-loaded", function() {
+>>>>>>> jqm-integration
                 if (that.loadContentQueue.length > 0) {
                     var tmp = that.loadContentQueue.splice(0, 1)[0];
                     that.loadContent(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4]);

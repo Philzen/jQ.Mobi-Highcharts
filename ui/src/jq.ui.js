@@ -1,7 +1,7 @@
  /**
  * jq.ui - A User Interface library for creating jqMobi applications
  *
- * @copyright 2011
+ * @copyright 2011 Intel
  * @author AppMobi
  */
 (function($) {
@@ -52,8 +52,11 @@
 
         //click back event
          window.addEventListener("popstate", function() {
+            
             var id = $.ui.getPanelId(document.location.hash);
             //make sure we allow hash changes outside jqUi
+            if(id==""&&$.ui.history.length===1) //Fix going back to first panel and an empty hash
+                id="#"+$.ui.firstDiv.id;
             if(id=="")
                 return;
             if(document.querySelectorAll(id+".panel").length===0)
@@ -61,7 +64,6 @@
             if (id != "#" + $.ui.activeDiv.id)
                 that.goBack();
         }, false);
-
         /**
          * Helper function to setup the transition objects
          * Custom transitions can be added via $.ui.availableTransitions
@@ -429,7 +431,7 @@
          * @title $.ui.toggleNavMenu([force])
          */
         toggleNavMenu: function(force) {
-            if (!jq.ui.showNavMenu)
+            if (!this.showNavMenu)
                 return;
             if (jq("#navbar").css("display") != "none" && ((force !== undefined && force !== true) || force === undefined)) {
                 jq("#content").css("bottom", "0px");
@@ -1604,7 +1606,7 @@
                     loadFirstDiv();
             }
             var that = this;
-            $.bind($.ui, "content-loaded", function() {
+            $.bind(that, "content-loaded", function() {
                 if (that.loadContentQueue.length > 0) {
                     var tmp = that.loadContentQueue.splice(0, 1)[0];
                     that.loadContent(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4]);
