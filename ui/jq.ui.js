@@ -589,7 +589,7 @@
 				}
 			},
 			scrollToItem: function(el, where, time) { //TODO: add functionality for x position
-				if(!$.is$(el)) el = $(el);
+				if(!jq.is$(el)) el = jq(el);
 
 				if(where == 'bottom') {
 					var itemPos = el.offset();
@@ -682,11 +682,11 @@
 			this.init(el, opts);
 			var jqel = jq(el);
 			if(opts.noParent !== true) {
-				var oldParent = $el.parent();
+				var oldParent = jqel.parent();
 				var oldHeight=oldParent.height();
 				oldHeight+=oldHeight.indexOf("%")==-1?"px":"";
-				$el.css('height', oldHeight);
-				$el.parent().parent().append($el);
+				jqel.css('height', oldHeight);
+				jqel.parent().parent().append(jqel);
 				oldParent.remove();
 			}
 			this.container = this.el;
@@ -3120,10 +3120,10 @@ if (!HTMLElement.prototype.unwatch) {
 
         //click back event
          window.addEventListener("popstate", function() {
-            var id = $.ui.getPanelId(document.location.hash);
+            var id = jq.ui.getPanelId(document.location.hash);
             //make sure we allow hash changes outside jqUi
-            if(id==""&&$.ui.history.length===1) //Fix going back to first panel and an empty hash
-                id="#"+$.ui.firstDiv.id;
+            if(id==""&&jq.ui.history.length===1) //Fix going back to first panel and an empty hash
+                id="#"+jq.ui.firstDiv.id;
             if(id=="")
                 return;
             if(document.querySelectorAll(id+".panel").length===0)
@@ -4673,7 +4673,7 @@ if (!HTMLElement.prototype.unwatch) {
                     loadFirstDiv();
             }
             var that = this;
-            $.bind(that, "content-loaded", function() {
+            jq.bind(that, "content-loaded", function() {
                 if (that.loadContentQueue.length > 0) {
                     var tmp = that.loadContentQueue.splice(0, 1)[0];
                     that.loadContent(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4]);
