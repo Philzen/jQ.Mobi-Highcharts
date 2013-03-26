@@ -1,0 +1,3 @@
+[submodule "lib/closure-compiler"]
+	path = lib/closure-compiler
+	url = git@github.com:thanpolas/superstartup-closure-compiler.git

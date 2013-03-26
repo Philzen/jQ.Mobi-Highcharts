@@ -682,17 +682,11 @@
 			this.init(el, opts);
 			var jqel = jq(el);
 			if(opts.noParent !== true) {
-<<<<<<< HEAD
-				var oldParent = jqel.parent();
-				jqel.css('height', oldParent.height());
-				jqel.parent().parent().append(jqel);
-=======
 				var oldParent = $el.parent();
 				var oldHeight=oldParent.height();
 				oldHeight+=oldHeight.indexOf("%")==-1?"px":"";
 				$el.css('height', oldHeight);
 				$el.parent().parent().append($el);
->>>>>>> jqm-integration
 				oldParent.remove();
 			}
 			this.container = this.el;
@@ -2380,7 +2374,7 @@ if (!HTMLElement.prototype.unwatch) {
         }
     }
     var longTapTimer;
-    $(document).ready(function() {
+    jq(document).ready(function() {
         var prevEl;
         jq(document.body).bind('touchstart', function(e) {
             if(!e.touches||e.touches.length==0) return;
@@ -3126,12 +3120,7 @@ if (!HTMLElement.prototype.unwatch) {
 
         //click back event
          window.addEventListener("popstate", function() {
-<<<<<<< HEAD
-            var id = jq.ui.getPanelId(document.location.hash);
-=======
-            
             var id = $.ui.getPanelId(document.location.hash);
->>>>>>> jqm-integration
             //make sure we allow hash changes outside jqUi
             if(id==""&&$.ui.history.length===1) //Fix going back to first panel and an empty hash
                 id="#"+$.ui.firstDiv.id;
@@ -4684,11 +4673,7 @@ if (!HTMLElement.prototype.unwatch) {
                     loadFirstDiv();
             }
             var that = this;
-<<<<<<< HEAD
-            jq.bind(jq.ui, "content-loaded", function() {
-=======
             $.bind(that, "content-loaded", function() {
->>>>>>> jqm-integration
                 if (that.loadContentQueue.length > 0) {
                     var tmp = that.loadContentQueue.splice(0, 1)[0];
                     that.loadContent(tmp[0], tmp[1], tmp[2], tmp[3], tmp[4]);
