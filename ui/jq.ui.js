@@ -26,7 +26,7 @@
         }
         return tmp;
     };
-    $.fn["css3Animate"] = function (opts) {
+    jq.fn["css3Animate"] = function (opts) {
         //keep old callback system - backwards compatibility - should be deprecated in future versions
         if(!opts.complete && opts.callback) opts.complete = opts.callback;
         //first on
@@ -45,10 +45,10 @@
     };
 
     //if (!window.WebKitCSSMatrix) return;
-    var translateOpen =$.feat.cssTransformStart;
-    var translateClose = $.feat.cssTransformEnd;
-    var transitionEnd=$.feat.cssPrefix.replace(/-/g,"")+"TransitionEnd";
-    transitionEnd=($.os.fennec || $.feat.cssPrefix=="" || $.os.ie)?"transitionend":transitionEnd;
+    var translateOpen =jq.feat.cssTransformStart;
+    var translateClose = jq.feat.cssTransformEnd;
+    var transitionEnd=jq.feat.cssPrefix.replace(/-/g,"")+"TransitionEnd";
+    transitionEnd=(jq.os.fennec || jq.feat.cssPrefix=="" || jq.os.ie)?"transitionend":transitionEnd;
 
     transitionEnd=transitionEnd.replace(transitionEnd.charAt(0),transitionEnd.charAt(0).toLowerCase());
     
@@ -158,9 +158,9 @@
                         var time = options["time"]+scale;
                     }
             
-                    this.el.style[$.feat.cssPrefix+"TransitionDuration"] = time;
-                    this.el.style[$.feat.cssPrefix+"TransitionTimingFunction"] = options["timingFunction"];
-                    this.el.style[$.feat.cssPrefix+"TransformOrigin"] = options.origin;
+                    this.el.style[jq.feat.cssPrefix+"TransitionDuration"] = time;
+                    this.el.style[jq.feat.cssPrefix+"TransitionTimingFunction"] = options["timingFunction"];
+                    this.el.style[jq.feat.cssPrefix+"TransformOrigin"] = options.origin;
                 }
 
                 //add callback to the stack
@@ -680,16 +680,16 @@
 		nativeScroller = function(el, opts) {
 
 			this.init(el, opts);
-            var $el = $(el);
+            var jqel = jq(el);
             if (opts.noParent !== true) {
-                var oldParent = $el.parent();
+                var oldParent = jqel.parent();
 
-                $el.css('height', oldParent.height()).css("width", oldParent.width());
-                $el.parent().parent().append($el);
+                jqel.css('height', oldParent.height()).css("width", oldParent.width());
+                jqel.parent().parent().append(jqel);
                 oldParent.remove();
             }
             this.container = this.el;
-            $el.css("-webkit-overflow-scrolling", "touch");
+            jqel.css("-webkit-overflow-scrolling", "touch");
 
             //if(opts.autoEnable)
             this.enable();
@@ -795,7 +795,7 @@
                 this.refreshTriggered = false;
                 if (this.refreshCancelCB) clearTimeout(this.refreshCancelCB);
                 this.hideRefresh(false);
-                $.trigger(this, 'refresh-cancel');
+                jq.trigger(this, 'refresh-cancel');
             }
 
             this.cY = newcY;
@@ -1157,7 +1157,7 @@
                     this.hscrollBar.style.top = (window.innerHeight - numOnly(this.hscrollBar.style.height)) + "px";
                 else
                     this.hscrollBar.style.bottom = numOnly(this.hscrollBar.style.height);
-                this.hscrollBar.style[$.feat.cssPrefix+"Transition"] = '';
+                this.hscrollBar.style[jq.feat.cssPrefix+"Transition"] = '';
 				// this.hscrollBar.style.opacity = 1;
 			}
 
@@ -1909,10 +1909,10 @@
                 var markEnd = '</div></div>';
                 var markup;
                 if (typeof opts === "string") {
-                    markup = $(markStart + opts +"<a href='javascript:;' class='cancel'>Cancel</a>"+markEnd);
+                    markup = jq(markStart + opts +"<a href='javascript:;' class='cancel'>Cancel</a>"+markEnd);
                 } else if (typeof opts === "object") {
-                    markup = $(markStart + markEnd);
-                    var container = $(markup.children().get());
+                    markup = jq(markStart + markEnd);
+                    var container = jq(markup.children().get());
                     opts.push({text:"Cancel",cssClasses:"cancel"});
                     for (var i = 0; i < opts.length; i++) {
                         var item = jq('<a href="javascript:;" >' + (opts[i].text || "TEXT NOT ENTERED") + '</a>');
@@ -2027,13 +2027,13 @@
  * with the old drop down box as normal with javascript, and this will be reflected
  
  */
-(function($) {
-	$['selectBox'] = {
+(function(jq) {
+	jq['selectBox'] = {
 		scroller: null,
 		getOldSelects: function(elID) {
-			if (!$.os.android || $.os.androidICS)
+			if (!jq.os.android || jq.os.androidICS)
 				return;
-			if (!$.fn['scroller']) {
+			if (!jq.fn['scroller']) {
 				alert("This library requires jq.web.Scroller");
 				return;
 			}
@@ -2079,7 +2079,7 @@
 					fakeInput.onclick = function(e) {
 						that.initDropDown(this.linkId);
 					};
-					$(fakeInput).insertBefore($(theSel));
+					jq(fakeInput).insertBefore(jq(theSel));
 					//theSel.parentNode.style.position = "relative";
 					theSel.style.display = "none";
 					theSel.style.webkitAppearance = "none";
@@ -2249,10 +2249,10 @@
 
 			if (!el.getAttribute("multiple")) {
 				el.selectedIndex = value;
-				$(el).find("option").forEach(function(obj) {
+				jq(el).find("option").forEach(function(obj) {
 					obj.selected = false;
 				});
-				$(el).find("option:nth-child(" + (value + 1) + ")").get(0).selected = true;
+				jq(el).find("option:nth-child(" + (value + 1) + ")").get(0).selected = true;
 				this.scroller.scrollTo({
 					x: 0,
 					y: 0
@@ -2262,18 +2262,18 @@
 			else {
 				//multi select
 
-				var myEl = $(el).find("option:nth-child(" + (value + 1) + ")").get(0);
+				var myEl = jq(el).find("option:nth-child(" + (value + 1) + ")").get(0);
 				if (myEl.selected) {
 					myEl.selected = false;
-					$(div).find("button").css("background", "#fff");
+					jq(div).find("button").css("background", "#fff");
 				}
 				else {
 					myEl.selected = true;
-					$(div).find("button").css("background", "#000");
+					jq(div).find("button").css("background", "#000");
 				}
 
 			}
-			$(el).trigger("change");
+			jq(el).trigger("change");
 			el = null;
 		},
 		hideDropDown: function() {
@@ -2301,21 +2301,21 @@
 			var that = this;
 			modalDiv.appendChild(myDiv);
 
-			$(document).ready(function() {
+			jq(document).ready(function() {
 
 				if (jq("#jQUi"))
 					jq("#jQUi").append(modalDiv);
 				else
 					document.body.appendChild(modalDiv);
-				var close = $("#jqmobiSelectClose").get();
+				var close = jq("#jqmobiSelectClose").get();
 				close.onclick = function() {
 					that.hideDropDown();
 				};
 
-				var styleSheet = $("<style>.jqselectscrollBarV{opacity:1 !important;}</style>").get();
+				var styleSheet = jq("<style>.jqselectscrollBarV{opacity:1 !important;}</style>").get();
 				document.body.appendChild(styleSheet);
 				try {
-					that.scroller = $("#jqmobiSelectBoxScroll").scroller({
+					that.scroller = jq("#jqmobiSelectBoxScroll").scroller({
 						scroller: false,
 						verticalScroll: true,
 						vScrollCSS: "jqselectscrollBarV"
@@ -2395,11 +2395,11 @@
     var longTapTimer;
     jq(document).ready(function() {
         var prevEl;
-        $(document.body).bind('touchstart', function(e) {
+        jq(document.body).bind('touchstart', function(e) {
             if(!e.touches||e.touches.length == 0) return;
             var now = Date.now(), delta = now - (touch.last || now);
             if(!e.touches||e.touches.length == 0) return;
-            touch.el = $(parentIfText(e.touches[0].target));
+            touch.el = jq(parentIfText(e.touches[0].target));
             touchTimeout && clearTimeout(touchTimeout);
             touch.x1 =  e.touches[0].pageX;
             touch.y1 = e.touches[0].pageY;
@@ -2478,7 +2478,7 @@
 //Other
 //orientationchange-reshape - resize event due to an orientationchange action
 //reshape - window.resize/window.scroll event (ignores onfocus "shaking") - general reshape notice
-(function($) {
+(function(jq) {
 
 	//singleton
 	jq.touchLayer = function(el) {
@@ -3106,9 +3106,9 @@
 
         /**
          * Helper function to setup the transition objects
-         * Custom transitions can be added via $.ui.availableTransitions
+         * Custom transitions can be added via jq.ui.availableTransitions
            ```
-           $.ui.availableTransitions['none']=function();
+           jq.ui.availableTransitions['none']=function();
            ```
          */
         
@@ -3154,8 +3154,8 @@
          window.addEventListener("popstate", function() {
             var id = jq.ui.getPanelId(document.location.hash);
             //make sure we allow hash changes outside jqUi
-            if(id==""&&$.ui.history.length === 1) //Fix going back to first panel and an empty hash
-                id="#"+$.ui.firstDiv.id;
+            if(id==""&&jq.ui.history.length === 1) //Fix going back to first panel and an empty hash
+                id="#"+jq.ui.firstDiv.id;
             if(id=="")
                 return;
             if(document.querySelectorAll(id+".panel").length === 0)
@@ -3872,7 +3872,7 @@
             
             
             if (el.getAttribute("js-scrolling") && el.getAttribute("js-scrolling").toLowerCase() === "yes") {
-                $.cleanUpContent(el.childNodes[0], false, true);
+                jq.cleanUpContent(el.childNodes[0], false, true);
                 el.childNodes[0].innerHTML = content;
             } else {
                 jq.cleanUpContent(el, false, true);
@@ -4038,7 +4038,7 @@
             var hasFooter = what.getAttribute("data-footer");
             var hasHeader = what.getAttribute("data-header");
 
-            //$asap removed since animations are fixed in css3animate
+            //jqasap removed since animations are fixed in css3animate
             if (hasFooter && hasFooter.toLowerCase() === "none") {
                 that.toggleNavMenu(false);
             } else {
@@ -4715,7 +4715,7 @@
         topClickScroll:function(){
              document.getElementById("header").addEventListener("click",function(e){
                 if(e.clientY <= 15 && e.target.nodeName.toLowerCase() === "h1") //hack - the title spans the whole width of the header
-                    $.ui.scrollingDivs[$.ui.activeDiv.id].scrollToTop("100");
+                    jq.ui.scrollingDivs[jq.ui.activeDiv.id].scrollToTop("100");
             });
         
         },
@@ -4864,8 +4864,8 @@
 
 //The following functions are utilitiy functions for jqUi within appMobi.
 
-(function($) {
-    $(document).one("appMobi.device.ready", function() { //in AppMobi, we need to undo the height stuff since it causes issues.
+(function(jq) {
+    jq(document).one("appMobi.device.ready", function() { //in AppMobi, we need to undo the height stuff since it causes issues.
         setTimeout(function() {
             document.getElementById('jQUi').style.height = "100%";
             document.body.style.height = "100%";
@@ -4876,11 +4876,11 @@
         })
     });
     //Right now there is a bug where iOS will not scroll a div, even though it's enabled.  This turns scrolling back on with orientation changes
-    if($.feat.nativeTouchScroll){
+    if(jq.feat.nativeTouchScroll){
         document.addEventListener("orientationchange",function(e){
-            if($.ui.scrollingDivs[$.ui.activeDiv.id])
+            if(jq.ui.scrollingDivs[jq.ui.activeDiv.id])
             {
-                var tmpscroller=$.ui.scrollingDivs[$.ui.activeDiv.id];
+                var tmpscroller=jq.ui.scrollingDivs[jq.ui.activeDiv.id];
                 if(tmpscroller.el.scrollTop==0)
                 {
                     tmpscroller.disable();
@@ -4892,7 +4892,7 @@
         });
     }
 })(jq);
-(function($ui){
+(function(jqui){
     
         function fadeTransition (oldDiv, currDiv, back) {
             oldDiv.style.display = "block";
@@ -4956,9 +4956,9 @@
                 });
             }
         }
-        $ui.availableTransitions.fade = fadeTransition;
+        jqui.availableTransitions.fade = fadeTransition;
 })(jq.ui);
-(function($ui){
+(function(jqui){
     
         function flipTransition (oldDiv, currDiv, back) {
              oldDiv.style.display = "block";
@@ -5040,9 +5040,9 @@
                 });
             }
         }
-        $ui.availableTransitions.flip = flipTransition;
+        jqui.availableTransitions.flip = flipTransition;
 })(jq.ui);
-(function($ui){
+(function(jqui){
         
          function popTransition(oldDiv, currDiv, back) {
             oldDiv.style.display = "block";
@@ -5110,9 +5110,9 @@
                 });
             }
         }
-        $ui.availableTransitions.pop = popTransition;
+        jqui.availableTransitions.pop = popTransition;
 })(jq.ui);
-(function($ui){
+(function(jqui){
     
         /**
          * Initiate a sliding transition.  This is a sample to show how transitions are implemented.  These are registered in jqui.availableTransitions and take in three parameters.
@@ -5167,10 +5167,10 @@
 				});
             }
         }
-        $ui.availableTransitions.slide = slideTransition;
-        $ui.availableTransitions['default'] = slideTransition;
+        jqui.availableTransitions.slide = slideTransition;
+        jqui.availableTransitions['default'] = slideTransition;
 })(jq.ui);
-(function($ui){
+(function(jqui){
     
         function slideDownTransition (oldDiv, currDiv, back) {
             oldDiv.style.display = "block";
@@ -5234,7 +5234,7 @@
                 });
             }
         }
-        $ui.availableTransitions.down = slideDownTransition;
+        jqui.availableTransitions.down = slideDownTransition;
 })(jq.ui);
 
 (function(jqui){
@@ -5291,6 +5291,6 @@
                 });
             }
         }
-        $ui.availableTransitions.up = slideUpTransition;
+        jqui.availableTransitions.up = slideUpTransition;
 })(jq.ui);
 
