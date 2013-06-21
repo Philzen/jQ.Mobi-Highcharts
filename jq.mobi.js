@@ -561,7 +561,7 @@ if (!window.jq || typeof (jq) !== "function") {
             empty: function() {
                 for (var i = 0; i < this.length; i++) {
                     $.cleanUpContent(this[i], false, true);
-                    this[i].innerHTML = '';
+                    this[i].textContent = '';
                 }
                 return this;
             },
@@ -1451,7 +1451,7 @@ if (!window.jq || typeof (jq) !== "function") {
         
         function empty() {
         }
-        var ajaxSettings = {
+        $.ajaxSettings = {
             type: 'GET',
             beforeSend: empty,
             success: empty,
@@ -1536,9 +1536,9 @@ if (!window.jq || typeof (jq) !== "function") {
             try {
 				
                 var settings = opts || {};
-                for (var key in ajaxSettings) {
+                for (var key in $.ajaxSettings) {
                     if (typeof(settings[key]) == 'undefined')
-                        settings[key] = ajaxSettings[key];
+                        settings[key] = $.ajaxSettings[key];
                 }
                 
                 if (!settings.url)
@@ -2282,14 +2282,14 @@ if (!window.jq || typeof (jq) !== "function") {
            ```
          * @param {Object} object
          * @param {String} event name
-         * @param {Array} arguments
+         * @param {Array|Object} arguments
          * @title $.trigger(object,event,argments);
          */
 		$.trigger = function(obj, ev, args){
 			var ret = true;
 			if(!obj.__events) return ret;
 			if(!$.isArray(ev)) ev = [ev];
-			if(!$.isArray(args)) args = [];
+			if(!$.isArray(args)) args = [args];
 			for(var i=0; i<ev.length; i++){
 				if(obj.__events[ev[i]]){
 					var evts = obj.__events[ev[i]];

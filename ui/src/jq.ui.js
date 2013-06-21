@@ -15,6 +15,17 @@
         // Init the page
         var that = this;
 
+        /**
+         * Helper function to setup the transition objects
+         * Custom transitions can be added via $.ui.availableTransitions
+           ```
+           $.ui.availableTransitions['none']=function();
+           ```
+         */
+        
+        this.availableTransitions = {};
+        this.availableTransitions['default'] = this.availableTransitions['none'] = this.noTransition;
+
         //setup the menu and boot touchLayer
         jq(document).ready(function() {
 
@@ -39,7 +50,7 @@
                 that.autoBoot();
                 this.removeEventListener("appMobi.device.ready", arguments.callee);
             }, false);
-        else if (document.readyState == "complete" || document.readyState == "loaded") {
+        else if (document.readyState === "complete" || document.readyState === "loaded") {
             this.autoBoot();
         } else
             document.addEventListener("DOMContentLoaded", function() {
@@ -55,25 +66,15 @@
             
             var id = $.ui.getPanelId(document.location.hash);
             //make sure we allow hash changes outside jqUi
-            if(id==""&&$.ui.history.length===1) //Fix going back to first panel and an empty hash
+            if(id==""&&$.ui.history.length === 1) //Fix going back to first panel and an empty hash
                 id="#"+$.ui.firstDiv.id;
             if(id=="")
                 return;
-            if(document.querySelectorAll(id+".panel").length===0)
+            if(document.querySelectorAll(id+".panel").length === 0)
                 return;
             if (id != "#" + $.ui.activeDiv.id)
                 that.goBack();
         }, false);
-        /**
-         * Helper function to setup the transition objects
-         * Custom transitions can be added via $.ui.availableTransitions
-           ```
-           $.ui.availableTransitions['none']=function();
-           ```
-         */
-        
-        this.availableTransitions = {};
-        this.availableTransitions['default'] = this.availableTransitions['none'] = this.noTransition;
     };
     
     
@@ -350,7 +351,7 @@
          * @title $.ui.updateHash(newHash)
          */
         updateHash: function(newHash) {
-            newHash = newHash.indexOf('#') == -1 ? '#' + newHash : newHash; //force having the # in the begginning as a standard
+            newHash = newHash.indexOf('#') === -1 ? '#' + newHash : newHash; //force having the # in the begginning as a standard
             previousTarget = newHash;
             
             var previousHash = window.location.hash;
@@ -367,7 +368,7 @@
         /*gets the panel name from an hash*/
         getPanelId: function(hash) {
             var firstSlash = hash.indexOf('/');
-            return firstSlash == -1 ? hash : hash.substring(0, firstSlash);
+            return firstSlash === -1 ? hash : hash.substring(0, firstSlash);
         },
 
         /**
@@ -581,7 +582,7 @@
             var nb = jq("#navbar");
             if (elems === undefined || elems == null)
                 return;
-            if (typeof (elems) == "string")
+            if (typeof (elems) === "string")
                 return nb.html(elems, true), null;
             nb.html("");
             for (var i = 0; i < elems.length; i++) {
@@ -604,7 +605,7 @@
             var nb = jq("#header");
             if (elems === undefined || elems == null)
                 return;
-            if (typeof (elems) == "string")
+            if (typeof (elems) === "string")
                 return nb.html(elems, true), null;
             nb.html("");
             for (var i = 0; i < elems.length; i++) {
@@ -627,7 +628,7 @@
             
             if (elems === undefined || elems == null)
                 return;
-            if (typeof (elems) == "string") {
+            if (typeof (elems) === "string") {
                 nb.html(elems, true)
             } 
             else {
@@ -753,7 +754,7 @@
 
             var tmp=$($("#modalContainer").data("panel"));
             var fnc = tmp.data("unload");
-            if (typeof fnc == "string" && window[fnc]) {
+            if (typeof fnc === "string" && window[fnc]) {
                 window[fnc](tmp.get(0));
             }
             tmp.trigger("unloadpanel");
@@ -782,7 +783,7 @@
             
             
             
-            if (el.getAttribute("js-scrolling") && el.getAttribute("js-scrolling").toLowerCase() == "yes") {
+            if (el.getAttribute("js-scrolling") && el.getAttribute("js-scrolling").toLowerCase() === "yes") {
                 $.cleanUpContent(el.childNodes[0], false, true);
                 el.childNodes[0].innerHTML = content;
             } else {
@@ -803,7 +804,7 @@
          * @title $.ui.addContentDiv(id,content,title);
          */
         addContentDiv: function(el, content, title, refresh, refreshFunc) {
-            el = typeof (el) !== "string" ? el : el.indexOf("#") == -1 ? "#" + el : el;
+            el = typeof (el) !== "string" ? el : el.indexOf("#") === -1 ? "#" + el : el;
             var myEl = jq(el).get(0);
             if (!myEl) {
                 var newDiv = document.createElement("div");
@@ -839,21 +840,21 @@
         addDivAndScroll: function(tmp, refreshPull, refreshFunc, container) {
             var jsScroll = false;
             var overflowStyle = tmp.style.overflow;
-            var hasScroll = overflowStyle != 'hidden' && overflowStyle != 'visible';
+            var hasScroll = overflowStyle !== 'hidden' && overflowStyle !== 'visible';
             
             container = container || this.content;
             //sets up scroll when required and not supported
             if (!$.feat.nativeTouchScroll && hasScroll)
                 tmp.setAttribute("js-scrolling", "yes");
             
-            if (tmp.getAttribute("js-scrolling") && tmp.getAttribute("js-scrolling").toLowerCase() == "yes") {
+            if (tmp.getAttribute("js-scrolling") && tmp.getAttribute("js-scrolling").toLowerCase() === "yes") {
                 jsScroll = true;
                 hasScroll = true;
             }
             
             
             
-            if (tmp.getAttribute("scrolling") && tmp.getAttribute("scrolling") == "no") {
+            if (tmp.getAttribute("scrolling") && tmp.getAttribute("scrolling") === "no") {
                 hasScroll = false;
                 jsScroll = false;
                 tmp.removeAttribute("js-scrolling");
@@ -950,7 +951,7 @@
             var hasHeader = what.getAttribute("data-header");
 
             //$asap removed since animations are fixed in css3animate
-            if (hasFooter && hasFooter.toLowerCase() == "none") {
+            if (hasFooter && hasFooter.toLowerCase() === "none") {
                 that.toggleNavMenu(false);
             } else {
                 that.toggleNavMenu(true);
@@ -963,7 +964,7 @@
                     that.updateNavbarElements(that.defaultFooter);
                 that.customFooter = false;
             }
-            if (hasHeader && hasHeader.toLowerCase() == "none") {
+            if (hasHeader && hasHeader.toLowerCase() === "none") {
                 that.toggleHeaderMenu(false);
             } else {
                 that.toggleHeaderMenu(true);
@@ -1019,13 +1020,13 @@
             
             if (oldDiv) {
                 fnc = oldDiv.getAttribute("data-unload");
-                if (typeof fnc == "string" && window[fnc]) {
+                if (typeof fnc === "string" && window[fnc]) {
                     window[fnc](oldDiv);
                 }
                 $(oldDiv).trigger("unloadpanel");
             }
             var fnc = what.getAttribute("data-load");
-            if (typeof fnc == "string" && window[fnc]) {
+            if (typeof fnc === "string" && window[fnc]) {
                 window[fnc](what);
             }
             $(what).trigger("loadpanel");
@@ -1069,7 +1070,7 @@
             var that = this;
             var loadAjax = true;
             anchor = anchor || document.createElement("a"); //Hack to allow passing in no anchor
-            if (target.indexOf("#") == -1) {
+            if (target.indexOf("#") === -1) {
                 var urlHash = "url" + crc32(target); //Ajax urls
                 var crcCheck = jq("div.panel[data-crc='" + urlHash + "']");
                 if (jq("#" + target).length > 0) {
@@ -1093,7 +1094,7 @@
                         target = "#" + urlHash;
                 }
             }
-            if (target.indexOf("#") == -1 && loadAjax) {
+            if (target.indexOf("#") === -1 && loadAjax) {
                 this.loadAjax(target, newTab, back, transition, anchor);
             } else {
                 this.loadDiv(target, newTab, back, transition);
@@ -1118,7 +1119,7 @@
             
             var slashIndex = what.indexOf('/');
             var hashLink = "";
-            if (slashIndex != -1) {
+            if (slashIndex !== -1) {
                 // Ignore everything after the slash for loading
                 hashLink = what.substr(slashIndex);
                 what = what.substr(0, slashIndex);
@@ -1140,7 +1141,7 @@
             
             if (what.getAttribute("data-modal") == "true" || what.getAttribute("modal") == "true") {
                 var fnc = what.getAttribute("data-load");
-                if (typeof fnc == "string" && window[fnc]) {
+                if (typeof fnc === "string" && window[fnc]) {
                     window[fnc](what);
                 }
                 $(what).trigger("loadpanel");
@@ -1201,7 +1202,7 @@
                 if (this.history.length > 0) {
                     var val = this.history[this.history.length - 1];
                     var slashIndex = val.target.indexOf('/');
-                    if (slashIndex != -1) {
+                    if (slashIndex !== -1) {
                         var prevId = val.target.substr(0, slashIndex);
                     } else
                         var prevId = val.target;
@@ -1247,11 +1248,11 @@
          */
         loadAjax: function(target, newTab, back, transition, anchor) {
             // XML Request
-            if (this.activeDiv.id == "jQui_ajax" && target == this.ajaxUrl)
+            if (this.activeDiv.id === "jQui_ajax" && target == this.ajaxUrl)
                 return;
             var urlHash = "url" + crc32(target); //Ajax urls
             var that = this;
-            if (target.indexOf("http") == -1)
+            if (target.indexOf("http") === -1)
                 target = AppMobi.webRoot + target;
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
@@ -1340,7 +1341,7 @@
             }
             
             var that = this;
-            this.isAppMobi = (window.AppMobi && typeof (AppMobi) == "object" && AppMobi.app !== undefined) ? true : false;
+            this.isAppMobi = (window.AppMobi && typeof (AppMobi) === "object" && AppMobi.app !== undefined) ? true : false;
             this.viewportContainer = jq("#jQUi");
             this.navbar = jq("#navbar").get(0);
             this.content = jq("#content").get(0);
@@ -1438,7 +1439,8 @@
             this.header.innerHTML = '<a id="backButton"  href="javascript:;"></a> <h1 id="pageTitle"></h1>' + header.innerHTML;
             this.backButton = $("#header #backButton").get(0);
             this.backButton.className = "button";
-            jq(document).on("click", "#header #backButton", function() {
+            jq(document).on("click", "#header #backButton", function(e) {
+                e.preventDefault();
                 that.goBack();
             });
             this.backButton.style.visibility = "hidden";
@@ -1577,8 +1579,9 @@
                         that.loadContent(defaultHash, true, false, 'none'); //load the active page as a newTab with no transition
                     } else {
                         previousTarget = "#" + that.firstDiv.id;
-                        that.loadContentData(that.firstDiv); //load the info off the first panel
                         that.parsePanelFunctions(that.firstDiv);
+                        that.loadContentData(that.firstDiv); //load the info off the first panel
+                        
                         
                         that.firstDiv.style.display = "block";
                         $("#header #backButton").css("visibility", "hidden");
@@ -1623,7 +1626,7 @@
          */
         topClickScroll:function(){
              document.getElementById("header").addEventListener("click",function(e){
-                if(e.clientY<=15&&e.target.nodeName.toLowerCase()=="h1") //hack - the title spans the whole width of the header
+                if(e.clientY <= 15 && e.target.nodeName.toLowerCase() === "h1") //hack - the title spans the whole width of the header
                     $.ui.scrollingDivs[$.ui.activeDiv.id].scrollToTop("100");
             });
         
@@ -1698,9 +1701,9 @@
         if (theTarget.tagName.toLowerCase() != "a" && theTarget.parentNode)
             return checkAnchorClick(e, theTarget.parentNode); //let's try the parent (recursive)
         //anchors
-        if (theTarget.tagName !== "undefined" && theTarget.tagName.toLowerCase() == "a") {
+        if (theTarget.tagName !== "undefined" && theTarget.tagName.toLowerCase() === "a") {
             
-            var custom = (typeof jq.ui.customClickHandler == "function") ? jq.ui.customClickHandler : false;
+            var custom = (typeof jq.ui.customClickHandler === "function") ? jq.ui.customClickHandler : false;
             if (custom !== false) {
                 if(jq.ui.customClickHandler(theTarget))
                    return e.preventDefault();
@@ -1735,14 +1738,14 @@
                 href = href.substring(prefix.length+1);
             }
             //empty links
-            if (href == "#" ||(href.indexOf("#")===href.length-1)|| (href.length == 0 && theTarget.hash.length == 0))
+            if (href === "#" ||(href.indexOf("#") === href.length-1)|| (href.length == 0 && theTarget.hash.length == 0))
                 return;
 
             //internal links
             e.preventDefault();
             var mytransition = theTarget.getAttribute("data-transition");
             var resetHistory = theTarget.getAttribute("data-resetHistory");
-            resetHistory = resetHistory && resetHistory.toLowerCase() == "true" ? true : false;
+            resetHistory = resetHistory && resetHistory.toLowerCase() === "true" ? true : false;
             var href = theTarget.hash.length > 0 ? theTarget.hash : theTarget.href;
             jq.ui.loadContent(href, resetHistory, 0, mytransition, theTarget);
             return;
@@ -1773,7 +1776,7 @@
 
 //The following functions are utilitiy functions for jqUi within appMobi.
 
-(function() {
+(function($) {
     $(document).one("appMobi.device.ready", function() { //in AppMobi, we need to undo the height stuff since it causes issues.
         setTimeout(function() {
             document.getElementById('jQUi').style.height = "100%";
@@ -1784,4 +1787,20 @@
             $.ui.blockPageScroll();
         })
     });
-})();
+    //Right now there is a bug where iOS will not scroll a div, even though it's enabled.  This turns scrolling back on with orientation changes
+    if($.feat.nativeTouchScroll){
+        document.addEventListener("orientationchange",function(e){
+            if($.ui.scrollingDivs[$.ui.activeDiv.id])
+            {
+                var tmpscroller=$.ui.scrollingDivs[$.ui.activeDiv.id];
+                if(tmpscroller.el.scrollTop==0)
+                {
+                    tmpscroller.disable();
+                    setTimeout(function(){
+                        tmpscroller.enable();
+                    },300);
+                }
+            }
+        });
+    }
+})(jq);
